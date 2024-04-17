@@ -51,6 +51,27 @@ def normalize(df,features):
         df[feature]=(df[feature]-mean[feature])/std[feature]
     
     return df,mean,std
+
+def normalize_with_mean_std(df,features,mean,std):
+    '''
+    this function normalises the given features to given mean and standard deviation
+    
+    params
+    df: input as pandas datafield
+    features: list of keys of features to be normalized
+    mean: dictionary containing mean of features normalised
+    std: dictionary containing standard deviation of features normalised    
+    
+    returns
+    df: datafield after normalisation 
+    
+    '''
+    for feature in features:
+        mean[feature]=np.mean(df[feature])
+        std[feature]=np.std(df[feature])
+        df[feature]=(df[feature]-mean[feature])/std[feature]
+    
+    return df
     
 def forward_prop(W,X,b):
     return 1/(1+np.exp(np.dot(W,X)+b))
