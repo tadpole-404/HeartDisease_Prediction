@@ -15,14 +15,18 @@ def infer(W_path,b_path,batch,features_preprocess,features_normalise,data_path):
     df=u.read_data(data_path,features_preprocess)
     
     df=u.normalize_with_mean_std(df,features_normalise,mean,std)
-    ran=np.random.randint(0,10000,(batch))
+    ran=np.random.randint(0,281,(batch))
     # print(df.iloc[1])
-    input=np.array([df.iloc[ran[i].item()] for i in range(batch)],np.float32)
+    try:
+        input=np.array([df.iloc[ran[i].item()] for i in range(batch)],np.float32)
+    except:
+        print(batch)
     input=np.transpose(input,(1,0))
     X=input[1:,:]
     gt=input[0,:]
     # print(X.shape)
     # print(input)
+    print(W.shape)
     Y_prediction=u.forward_prop(W,X,b)
     # print(f'prediction of model is :{Y_prediction}')
     Y_prediction=np.round(Y_prediction)
@@ -36,7 +40,7 @@ if __name__=='__main__':
     b_path="weights/b_weights epoch:90000 loss:0.45712472663833426.npy"
     features_preprocess=["AgeCategory","Race","GenHealth","HeartDisease",'Smoking','AlcoholDrinking','Stroke','DiffWalking','Sex','AgeCategory','Race','Diabetic','PhysicalActivity','GenHealth','Asthma','KidneyDisease','SkinCancer']
     features_normalise=["BMI","SleepTime","PhysicalHealth","MentalHealth","AgeCategory","Race","GenHealth"]
-    data_path='archive(4)/2020/heart_2020_cleaned.csv'
+    data_path='HeartDisease.csv'
 
     
     Y_prediction,gt=infer(W_path,b_path,2515,features_preprocess,features_normalise,data_path)

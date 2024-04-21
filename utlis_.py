@@ -1,14 +1,16 @@
 import pandas as pd
 import numpy as np
 
-def read_data(path,features):
+def read_data(path,features,flag=1):
     ''' 
     reads the csv file and returns the data as pandas datafield
     '''
     data=pd.read_csv(path)
     df=pd.DataFrame(data)
     # print(df['AgeCategory'].unique())
+
     return preprocess_input(df,features)
+   
    
 def preprocess_input(df,features):
     ''' 
@@ -74,11 +76,11 @@ def normalize_with_mean_std(df,features,mean,std):
     return df
     
 def forward_prop(W,X,b):
-    return 1/(1+np.exp(np.dot(W,X)+b))
+    return 1/(1+np.exp(-(np.dot(W,X)+b)))
 
 # binary cross entropy loss
-def loss(y,y_hat,batch):
-    return np.sum(-y*np.log(y_hat)-(1-y)*np.log(y_hat))/batch
+def loss(y,y_hat,batch,lam=10):
+    return np.sum(-lam*y*np.log(y_hat)-(1-y)*np.log(1-y_hat))
 
 def gradients(X,Y,Y_hat,j,batch):
     dW=[]
