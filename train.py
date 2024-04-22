@@ -3,9 +3,9 @@ import numpy as np
 from tqdm import tqdm
 import json
 #hyperparameters
-alpha=0.5
-epoch=100000
-batch=381
+alpha=0.0056
+epoch=5000
+batch=482
 loss_stored=[]
 #reading data
 # features_preprocess=['island','species']
@@ -47,33 +47,34 @@ for i in tqdm(range(epoch),unit='iteration'):
     for j in range(0,X.shape[1],batch):
         # print(j)
         # print(type(j))
-        Y_hat=u.forward_prop(W,X[:,j:j+batch],b)
+        Y_hat,exp=u.forward_prop(W,X[:,j:j+batch],b)
         # print(Y[:,j:j+batch].shape)
         # print(Y_hat.shape)
         # print(Y_hat.shape)
-        dW,db=u.gradients(X[:,j:j+batch],Y[:,j:j+batch],Y_hat,j,batch)
+        dW,db=u.gradients(X[:,j:j+batch],Y[:,j:j+batch],Y_hat,exp)
         W,b=u.update(dW,db,W,b,alpha)
         # print('done')
-        if i%500==0 or i<500:
+        if i%50==0:
             print(loss)
             loss+=u.loss(Y[:,j:j+batch],Y_hat,batch)
             # print(type(loss))
             # print(loss)
             # print(Y[:,j:j+batch].shape)
             # print(Y_hat[:,j:j+batch].shape)
-    if i%500==0:
+    if i%50==0:
         print(f'loss is :{loss}')
         loss_stored.append(loss)
         alpha=alpha/2
         #weight decay
     
-    if i%10000==0:
+    if i%100==0:
         print('saved weights')
-        np.save(f'weights/W_weights epoch:{i} loss:{loss}.npy',W)
-        np.save(f'weights/b_weights epoch:{i} loss:{loss}.npy',b)
+        np.save(f'weights/W_weights epoch:{i}.npy',W)
+        np.save(f'weights/b_weights epoch:{i}.npy',b)
         alpha/=2
         
 np.save('loss.npy',np.array(loss_stored))# saved after every 50 epoch
 
 print(Y)
-print(np.round(u.forward_prop(W,X,b)))
+pred,_=u.forward_prop(W,X,b)
+print(np.round(pred))

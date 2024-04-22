@@ -76,24 +76,26 @@ def normalize_with_mean_std(df,features,mean,std):
     return df
     
 def forward_prop(W,X,b):
-    return 1/(1+np.exp(-(np.dot(W,X)+b)))
+    return 1/(1+np.exp(-(np.dot(W,X)+b))),np.exp(-(np.dot(W,X)+b))
 
 # binary cross entropy loss
-def loss(y,y_hat,batch,lam=10):
-    return np.sum(-lam*y*np.log(y_hat)-(1-y)*np.log(1-y_hat))
+def loss(y,y_hat,batch,lam=0.33):
+    # return np.sum(-y*np.log(y_hat)-lam*(1-y)*np.log(1-y_hat))
+    return np.sum(-y*np.log(y_hat)-(1-y)*np.log(1-y_hat))/batch
 
-def gradients(X,Y,Y_hat,j,batch):
+def gradients(X,Y,Y_hat,exp,lam=0.33):
     dW=[]
     for i in range(X.shape[0]):
         # print('shape')
         # print(Y_hat.shape)
         # print(Y.shape)
         # print(X.shape)
-        
         grad=(Y_hat-Y)*X/X.shape[1]
+        # grad=(lam*(Y_hat-Y)+Y*(exp/(1+exp))*(1-lam))*X/X.shape[1]
         grad=np.sum(grad)
         dW.append(grad)
     db=(Y_hat-Y)/X.shape[1]
+    # db=(lam*(Y_hat-Y)+Y*[exp/(1+exp)]*(1-lam))/X.shape[1]
     db=np.sum(db)
     
     return dW,db

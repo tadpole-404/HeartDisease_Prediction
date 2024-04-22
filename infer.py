@@ -27,7 +27,7 @@ def infer(W_path,b_path,batch,features_preprocess,features_normalise,data_path):
     # print(X.shape)
     # print(input)
     print(W.shape)
-    Y_prediction=u.forward_prop(W,X,b)
+    Y_prediction,_=u.forward_prop(W,X,b)
     # print(f'prediction of model is :{Y_prediction}')
     Y_prediction=np.round(Y_prediction)
     return(Y_prediction,gt)
