@@ -1,7 +1,7 @@
-weights_prev
+weightsprev
 archive(4)
 weights
 mean.json
 std.json
 loss.npy
-penguins_binary_classification.csv
+csv.csv
