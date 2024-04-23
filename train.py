@@ -8,11 +8,10 @@ epoch=5000
 batch=482
 loss_stored=[]
 #reading data
-# features_preprocess=['island','species']
+
 features_preprocess=["AgeCategory","Race","GenHealth","HeartDisease",'Smoking','AlcoholDrinking','Stroke','DiffWalking','Sex','AgeCategory','Race','Diabetic','PhysicalActivity','GenHealth','Asthma','KidneyDisease','SkinCancer']
 df=u.read_data('heartDisease.csv',features_preprocess)
 features_normalise=["BMI","SleepTime","PhysicalHealth","MentalHealth","AgeCategory","Race","GenHealth"]
-# features_normalise=['body_mass_g','flipper_length_mm','bill_depth_mm','bill_length_mm']
 df,mean,std=u.normalize(df,features_normalise)
 
 with open('mean.json', 'w') as json_file:
@@ -33,8 +32,7 @@ for key in df.keys():
 X=np.array(data,np.float32)
 
 Y=np.reshape(Y,(1,Y.shape[0]))
-# print(Y.shape)
-# print(X.shape)
+
 
 #random intialisation of weights
 # np.random.seed(42)
@@ -45,22 +43,16 @@ b=np.random.randn(1)
 for i in tqdm(range(epoch),unit='iteration'):
     loss=0
     for j in range(0,X.shape[1],batch):
-        # print(j)
-        # print(type(j))
+
         Y_hat,exp=u.forward_prop(W,X[:,j:j+batch],b)
-        # print(Y[:,j:j+batch].shape)
-        # print(Y_hat.shape)
-        # print(Y_hat.shape)
+
         dW,db=u.gradients(X[:,j:j+batch],Y[:,j:j+batch],Y_hat,exp)
         W,b=u.update(dW,db,W,b,alpha)
         # print('done')
         if i%50==0:
             print(loss)
             loss+=u.loss(Y[:,j:j+batch],Y_hat,batch)
-            # print(type(loss))
-            # print(loss)
-            # print(Y[:,j:j+batch].shape)
-            # print(Y_hat[:,j:j+batch].shape)
+
     if i%50==0:
         print(f'loss is :{loss}')
         loss_stored.append(loss)

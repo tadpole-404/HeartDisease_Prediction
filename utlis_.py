@@ -7,7 +7,6 @@ def read_data(path,features,flag=1):
     '''
     data=pd.read_csv(path)
     df=pd.DataFrame(data)
-    # print(df['AgeCategory'].unique())
 
     return preprocess_input(df,features)
    
@@ -79,23 +78,17 @@ def forward_prop(W,X,b):
     return 1/(1+np.exp(-(np.dot(W,X)+b))),np.exp(-(np.dot(W,X)+b))
 
 # binary cross entropy loss
-def loss(y,y_hat,batch,lam=0.33):
-    # return np.sum(-y*np.log(y_hat)-lam*(1-y)*np.log(1-y_hat))
+def loss(y,y_hat,batch):
+
     return np.sum(-y*np.log(y_hat)-(1-y)*np.log(1-y_hat))/batch
 
-def gradients(X,Y,Y_hat,exp,lam=0.33):
+def gradients(X,Y,Y_hat,exp):
     dW=[]
     for i in range(X.shape[0]):
-        # print('shape')
-        # print(Y_hat.shape)
-        # print(Y.shape)
-        # print(X.shape)
         grad=(Y_hat-Y)*X/X.shape[1]
-        # grad=(lam*(Y_hat-Y)+Y*(exp/(1+exp))*(1-lam))*X/X.shape[1]
         grad=np.sum(grad)
         dW.append(grad)
     db=(Y_hat-Y)/X.shape[1]
-    # db=(lam*(Y_hat-Y)+Y*[exp/(1+exp)]*(1-lam))/X.shape[1]
     db=np.sum(db)
     
     return dW,db
@@ -108,10 +101,10 @@ def update(dW,db,W,b,alpha):
     
 
 if __name__=='__main__':
+    
     features_preprocess=["AgeCategory","Race","GenHealth","HeartDisease",'Smoking','AlcoholDrinking','Stroke','DiffWalking','Sex','AgeCategory','Race','Diabetic','PhysicalActivity','GenHealth','Asthma','KidneyDisease','SkinCancer']
     df=read_data('archive(4)/2020/heart_2020_cleaned.csv',features_preprocess)
     features=["BMI","SleepTime","PhysicalHealth","MentalHealth","AgeCategory","Race","GenHealth"]
     print(normalize(df,features))
     for col in df.columns:
         print(df[col])
-    # print(df['AgeCategory'])

@@ -16,7 +16,7 @@ def infer(W_path,b_path,batch,features_preprocess,features_normalise,data_path):
     
     df=u.normalize_with_mean_std(df,features_normalise,mean,std)
     ran=np.random.randint(0,281,(batch))
-    # print(df.iloc[1])
+
     try:
         input=np.array([df.iloc[ran[i].item()] for i in range(batch)],np.float32)
     except:
@@ -24,17 +24,13 @@ def infer(W_path,b_path,batch,features_preprocess,features_normalise,data_path):
     input=np.transpose(input,(1,0))
     X=input[1:,:]
     gt=input[0,:]
-    # print(X.shape)
-    # print(input)
+
     print(W.shape)
     Y_prediction,_=u.forward_prop(W,X,b)
-    # print(f'prediction of model is :{Y_prediction}')
+
     Y_prediction=np.round(Y_prediction)
     return(Y_prediction,gt)
-# print(Y_prediction.shape)
 
-# print(mean)
-# print(std)
 if __name__=='__main__':
     W_path="weights/W_weights epoch:90000 loss:0.45712472663833426.npy"
     b_path="weights/b_weights epoch:90000 loss:0.45712472663833426.npy"
