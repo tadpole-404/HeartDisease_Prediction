@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def read_data(path,features,flag=1):
+def read_data(path,features):
     ''' 
     reads the csv file and returns the data as pandas datafield
     '''

@@ -7,6 +7,7 @@ alpha=0.0056
 epoch=5000
 batch=482
 loss_stored=[]
+flag=1
 #reading data
 
 features_preprocess=["AgeCategory","Race","GenHealth","HeartDisease",'Smoking','AlcoholDrinking','Stroke','DiffWalking','Sex','AgeCategory','Race','Diabetic','PhysicalActivity','GenHealth','Asthma','KidneyDisease','SkinCancer']
@@ -36,8 +37,14 @@ Y=np.reshape(Y,(1,Y.shape[0]))
 
 #random intialisation of weights
 # np.random.seed(42)
-W=np.random.randn(1,17)
-b=np.random.randn(1)
+if flag:
+    W=np.load('weights/W_weights epoch:0.npy')
+    b=np.load('weights/b_weights epoch:0.npy')
+    
+else:
+    
+    W=np.random.randn(1,17)
+    b=np.random.randn(1)
 # print(W.shape)
 # print(b.shape)
 for i in tqdm(range(epoch),unit='iteration'):

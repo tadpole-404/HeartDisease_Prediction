@@ -28,8 +28,8 @@ def infer(W_path,b_path,batch,features_preprocess,features_normalise,data_path):
     print(W.shape)
     Y_prediction,_=u.forward_prop(W,X,b)
 
-    Y_prediction=np.round(Y_prediction)
-    return(Y_prediction,gt)
+    Y_prediction_round=np.round(Y_prediction)
+    return(Y_prediction_round,gt,Y_prediction)
 
 if __name__=='__main__':
     W_path="weights/W_weights epoch:90000 loss:0.45712472663833426.npy"
@@ -37,10 +37,7 @@ if __name__=='__main__':
     features_preprocess=["AgeCategory","Race","GenHealth","HeartDisease",'Smoking','AlcoholDrinking','Stroke','DiffWalking','Sex','AgeCategory','Race','Diabetic','PhysicalActivity','GenHealth','Asthma','KidneyDisease','SkinCancer']
     features_normalise=["BMI","SleepTime","PhysicalHealth","MentalHealth","AgeCategory","Race","GenHealth"]
     data_path='HeartDisease.csv'
-
-    
     Y_prediction,gt=infer(W_path,b_path,2515,features_preprocess,features_normalise,data_path)
     print(f'prediction of model is :{Y_prediction}')
-
     print(f'ground truth is :{gt}')
     
